@@ -1,34 +1,32 @@
+using Microsoft.EntityFrameworkCore;
+using AracYonetimi.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// 1. Servis Kayıtları (Dependency Injection)
+// Swagger'ı sisteme tanıtıyoruz
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// Veritabanı Yöneticisini (DbContext) sisteme kaydediyoruz
+// "DefaultConnection" bilgisini appsettings.Development.json'dan alıyor
+builder.Services.AddDbContext<AracDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 2. HTTP İstek Hattı (Middleware)
+// Sadece geliştirme ortamında Swagger arayüzünü açıyoruz
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-});
+// 3. Nabız Noktası (Health Check)
+// Uygulamanın ayağa kalkıp kalkmadığını kontrol ettiğimiz basit uç nokta
+app.MapGet("/health", () => "Sistem Avrupa Serbest Bölgesi'nde Aktif!");
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
