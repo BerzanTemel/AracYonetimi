@@ -20,7 +20,6 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Kod alanlarını Unique (benzersiz) yapıyoruz
         modelBuilder.Entity<AracTahsisTip>().HasIndex(x => x.Kod).IsUnique();
         modelBuilder.Entity<AracDurum>().HasIndex(x => x.Kod).IsUnique();
         modelBuilder.Entity<AracMarka>().HasIndex(x => x.Kod).IsUnique();

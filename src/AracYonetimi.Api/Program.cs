@@ -1,9 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using AracYonetimi.Infrastructure.Data;
+using AracYonetimi.Core.Interfaces;
+using AracYonetimi.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IAracRepository, AracRepository>();
 
 // 1. Servis Kayıtları (Dependency Injection)
 // Swagger'ı sisteme tanıtıyoruz
