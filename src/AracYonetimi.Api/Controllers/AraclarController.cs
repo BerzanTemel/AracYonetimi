@@ -10,7 +10,7 @@ public class AraclarController : ControllerBase
 {
     private readonly IAracRepository _aracRepository;
 
-    // Artık Controller oluşturulurken AppDbContext değil, IAracRepository (Garson) istiyoruz
+    // Artık Controller oluşturulurken AppDbContext değil, IAracRepository istiyoruz
     public AraclarController(IAracRepository aracRepository)
     {
         _aracRepository = aracRepository;

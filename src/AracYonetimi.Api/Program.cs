@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IAracRepository, AracRepository>();
+builder.Services.AddScoped<ILookupRepository, LookupRepository>();
 
 // 1. Servis Kayıtları (Dependency Injection)
 // Swagger'ı sisteme tanıtıyoruz
