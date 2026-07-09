@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using AracYonetimi.Infrastructure;
+using AracYonetimi.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers();
 
 // 1. Servis Kayıtları (Dependency Injection)
 // Swagger'ı sisteme tanıtıyoruz
@@ -10,7 +12,7 @@ builder.Services.AddSwaggerGen();
 
 // Veritabanı Yöneticisini (DbContext) sisteme kaydediyoruz
 // "DefaultConnection" bilgisini appsettings.Development.json'dan alıyor
-builder.Services.AddDbContext<AracDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
@@ -24,6 +26,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 // 3. Nabız Noktası (Health Check)
 // Uygulamanın ayağa kalkıp kalkmadığını kontrol ettiğimiz basit uç nokta
