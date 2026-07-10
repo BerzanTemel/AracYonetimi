@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using AracYonetimi.Infrastructure.Data;
 using AracYonetimi.Core.Interfaces;
 using AracYonetimi.Infrastructure.Repositories;
+using AracYonetimi.Api.Middlewares;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
+
+// Kendi yazdığımız hata yakalayıcı bekçiyi sisteme dahil ediyoruz:
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 // 2. HTTP İstek Hattı (Middleware)
 // Sadece geliştirme ortamında Swagger arayüzünü açıyoruz

@@ -15,9 +15,11 @@ public class LookupsController : ControllerBase
         _lookupRepository = lookupRepository;
     }
 
+
     [HttpGet("arac-tipler")]
     public async Task<IActionResult> GetAracTipler()
     {
+        
         var tipler = await _lookupRepository.GetAracTiplerAsync();
         return Ok(tipler);
     }
