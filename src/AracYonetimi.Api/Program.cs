@@ -3,17 +3,18 @@ using AracYonetimi.Infrastructure.Data;
 using AracYonetimi.Core.Interfaces;
 using AracYonetimi.Infrastructure.Repositories;
 using AracYonetimi.Api.Middlewares;
-
+using AracYonetimi.Application.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IAracRepository, AracRepository>();
 builder.Services.AddScoped<ILookupRepository, LookupRepository>();
-// AutoMapper'ı sisteme dahil et ve MappingProfile sınıfını bulup kuralları okumasını sağla
-builder.Services.AddAutoMapper(config => 
+
+// AutoMapper'ı sisteme dahil ediyoruz (16. satır civarı burası oluyor)
+builder.Services.AddAutoMapper(cfg => 
 {
-    config.AddProfile<AracYonetimi.Api.Mappings.MappingProfile>();
+    cfg.AddProfile<MappingProfile>();
 });
 
 // 1. Servis Kayıtları (Dependency Injection)
@@ -27,7 +28,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
-
 // Kendi yazdığımız hata yakalayıcı bekçiyi sisteme dahil ediyoruz:
 app.UseMiddleware<GlobalExceptionMiddleware>();
 

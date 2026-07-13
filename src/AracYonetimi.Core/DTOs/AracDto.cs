@@ -1,9 +1,13 @@
-namespace AracYonetimi.Api.DTOs
+using System;
+
+namespace AracYonetimi.Core.DTOs
 {
-    public class AracCreateDto
+    public class AracDto
     {
+        public int Id { get; set; }
         public string Plaka { get; set; } = string.Empty;
         public string Marka { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
+        public DateTime KayitTarihi { get; set; }
     }
 }

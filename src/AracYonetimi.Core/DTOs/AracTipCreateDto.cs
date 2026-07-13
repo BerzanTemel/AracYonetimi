@@ -1,4 +1,4 @@
-namespace AracYonetimi.Api.DTOs
+namespace AracYonetimi.Core.DTOs
 {
     public class AracTipCreateDto
     {

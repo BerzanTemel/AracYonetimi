@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AracYonetimi.Infrastructure\AracYonetimi.Infrastructure.csproj" />
     <ProjectReference Include="..\AracYonetimi.Core\AracYonetimi.Core.csproj" />
+    <ProjectReference Include="..\AracYonetimi.Application\AracYonetimi.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

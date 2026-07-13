@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using AracYonetimi.Core.Interfaces;
 using AutoMapper;
-using AracYonetimi.Api.DTOs;
-using System.Collections.Generic;
-
+using AracYonetimi.Core.DTOs;
 namespace AracYonetimi.Api.Controllers;
 
 [Route("api/[controller]")]
