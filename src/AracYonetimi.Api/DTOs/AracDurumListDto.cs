@@ -1,0 +1,8 @@
+namespace AracYonetimi.Api.DTOs
+{
+    public class AracDurumListDto
+    {
+        public int Id { get; set; }
+        public string DurumAdi { get; set; } = string.Empty;
+    }
+}

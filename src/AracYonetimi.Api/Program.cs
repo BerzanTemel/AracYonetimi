@@ -10,6 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddScoped<IAracRepository, AracRepository>();
 builder.Services.AddScoped<ILookupRepository, LookupRepository>();
+// AutoMapper'ı sisteme dahil et ve MappingProfile sınıfını bulup kuralları okumasını sağla
+builder.Services.AddAutoMapper(config => 
+{
+    config.AddProfile<AracYonetimi.Api.Mappings.MappingProfile>();
+});
 
 // 1. Servis Kayıtları (Dependency Injection)
 // Swagger'ı sisteme tanıtıyoruz

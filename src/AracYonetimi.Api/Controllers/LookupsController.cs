@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using AracYonetimi.Core.Interfaces;
+using AutoMapper;
+using AracYonetimi.Api.DTOs;
+using System.Collections.Generic;
 
 namespace AracYonetimi.Api.Controllers;
 
@@ -8,11 +11,13 @@ namespace AracYonetimi.Api.Controllers;
 public class LookupsController : ControllerBase
 {
     private readonly ILookupRepository _lookupRepository;
+    private readonly IMapper _mapper;
 
     // Garsonumuzu (ILookupRepository) Controller'a enjekte ediyoruz
-    public LookupsController(ILookupRepository lookupRepository)
+    public LookupsController(ILookupRepository lookupRepository, IMapper mapper)
     {
         _lookupRepository = lookupRepository;
+        _mapper = mapper;
     }
 
 
@@ -21,7 +26,9 @@ public class LookupsController : ControllerBase
     {
         
         var tipler = await _lookupRepository.GetAracTiplerAsync();
-        return Ok(tipler);
+
+        var tiplerDto = _mapper.Map<List<AracTipListDto>>(tipler);
+        return Ok(tiplerDto);
     }
 
     [HttpGet("arac-durumlar")]
@@ -35,21 +42,24 @@ public class LookupsController : ControllerBase
     public async Task<IActionResult> GetAracTahsisTipler()
     {
         var tahsisTipler = await _lookupRepository.GetAracTahsisTiplerAsync();
-        return Ok(tahsisTipler);
+        var tahsisTiplerDto = _mapper.Map<List<AracTahsisTipListDto>>(tahsisTipler);
+        return Ok(tahsisTiplerDto);
     }
 
     [HttpGet("arac-markalar")]
     public async Task<IActionResult> GetAracMarkalar()
     {
         var markalar = await _lookupRepository.GetAracMarkalarAsync();
-        return Ok(markalar);
+        var markalarDto = _mapper.Map<List<AracMarkaListDto>>(markalar);
+        return Ok(markalarDto);
     }
 
     [HttpGet("firmalar")]
     public async Task<IActionResult> GetFirmalar()
     {
         var firmalar = await _lookupRepository.GetFirmalarAsync();
-        return Ok(firmalar);
+        var firmalarDto = _mapper.Map<List<FirmaListDto>>(firmalar);
+        return Ok(firmalarDto);
     }
 
     // Dikkat: Burada personelleri getirmek için firmaKod parametresi istiyoruz
@@ -62,7 +72,8 @@ public class LookupsController : ControllerBase
         }
 
         var personeller = await _lookupRepository.GetPersonellerByFirmaAsync(firmaKod);
-        return Ok(personeller);
+        var personellerDto = _mapper.Map<List<PersonelDto>>(personeller);
+        return Ok(personellerDto);
     }
 
     [HttpGet("dovizler")]
