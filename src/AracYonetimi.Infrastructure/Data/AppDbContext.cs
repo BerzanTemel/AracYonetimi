@@ -20,6 +20,8 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<Arac>().ToTable("arac");
+
         modelBuilder.Entity<AracTahsisTip>().HasIndex(x => x.Kod).IsUnique();
         modelBuilder.Entity<AracDurum>().HasIndex(x => x.Kod).IsUnique();
         modelBuilder.Entity<AracMarka>().HasIndex(x => x.Kod).IsUnique();

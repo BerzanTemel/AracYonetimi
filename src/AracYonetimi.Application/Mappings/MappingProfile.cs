@@ -16,17 +16,17 @@ namespace AracYonetimi.Application.Mappings
             CreateMap<AracTahsisTip, AracTahsisTipListDto>();
             CreateMap<AracDurum, AracDurumListDto>();
             CreateMap<Doviz, DovizListDto>();
+            CreateMap<Personel, PersonelDto>();
 
             // --- EKLEME (CREATE) EŞLEŞTİRMELERİ (DTO -> Entity) ---
             // Burada veri dışarıdan (DTO'dan) gelip veritabanına (Entity'ye) yazılacağı için yönü ters çeviriyoruz
-            CreateMap<AracTipCreateDto, AracTip>();
-            CreateMap<FirmaCreateDto, Firma>();
             CreateMap<AracCreateDto, Arac>();
-            CreateMap<PersonelCreateDto, Personel>();
+            CreateMap<AracUpdateDto, Arac>().
+                ForMember(dest => dest.Id, opt => opt.Ignore()); // Güncelleme sırasında Id alanını ignore ediyoruz
 
             // --- LİSTELEME VE DETAY EŞLEŞTİRMELERİ (Entity -> DTO) ---
-            CreateMap<Personel, PersonelDto>();
-            CreateMap<Arac, AracDto>();
+            CreateMap<Arac, AracDetailDto>();
+            CreateMap<Arac, AracListDto>();
         }
     }
 }

@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using AracYonetimi.Core.Entities;
 using AracYonetimi.Core.Interfaces;
 using AracYonetimi.Infrastructure.Data;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AracYonetimi.Infrastructure.Repositories;
 

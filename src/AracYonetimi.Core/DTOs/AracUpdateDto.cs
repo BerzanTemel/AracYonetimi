@@ -2,13 +2,16 @@ using System;
 
 namespace AracYonetimi.Core.DTOs
 {
-    public class AracCreateDto
+    public class AracUpdateDto
     {
+        // Güncellenecek aracın kimliği
+        public int Id { get; set; }
+
         // --- 1. Grup: Temel Bilgiler ---
         public string Kod { get; set; } = string.Empty;
         public string TipKod { get; set; } = string.Empty;
         public string Plaka { get; set; } = string.Empty;
-        public string MarkaKod { get; set; } = string.Empty; // Lookup'tan geleceği için 'Kod' eki var
+        public string MarkaKod { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
         public string TahsisTipKod { get; set; } = string.Empty;
         public string? SahipFirmaKod { get; set; }
@@ -21,6 +24,7 @@ namespace AracYonetimi.Core.DTOs
         public DateTime? SozlesmeBitisTarih { get; set; }
         public string? DovizKod { get; set; }
         public decimal? Tutar { get; set; }
+        public DateTime? SozlesmeIptalTarih { get; set; }
 
         // --- 3. Grup: Km/Saat Bilgileri ---
         public int? MevcutKmSaat { get; set; }

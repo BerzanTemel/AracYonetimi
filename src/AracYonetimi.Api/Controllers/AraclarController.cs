@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using AracYonetimi.Core.Entities;
-using AracYonetimi.Core.Interfaces; // AppDbContext yerine bunu kullanıyoruz
+using AracYonetimi.Core.DTOs; // Artık Entity değil DTO kullanıyoruz
+using AracYonetimi.Core.Interfaces;
+using AracYonetimi.Application.Services; // IAracService için gerekli
 
 namespace AracYonetimi.Api.Controllers;
 
@@ -8,65 +9,74 @@ namespace AracYonetimi.Api.Controllers;
 [ApiController]
 public class AraclarController : ControllerBase
 {
-    private readonly IAracRepository _aracRepository;
+    private readonly IAracService _aracService;
 
-    // Artık Controller oluşturulurken AppDbContext değil, IAracRepository istiyoruz
-    public AraclarController(IAracRepository aracRepository)
+    // Artık IAracRepository değil, iş kurallarımızın bulunduğu IAracService'i istiyoruz
+    public AraclarController(IAracService aracService)
     {
-        _aracRepository = aracRepository;
+        _aracService = aracService;
     }
 
     [HttpPost]
-    public async Task<IActionResult> Ekle(Arac arac)
+    public async Task<IActionResult> Ekle(AracCreateDto createDto)
     {
-        // Veritabanına ekleme işini Repository'ye devrettik
-        await _aracRepository.AddAsync(arac);
-        
-        return Ok(arac);
+        // Gelen DTO'yu servise gönderiyoruz, iş kuralları orada işletilip veritabanına eklenecek
+        await _aracService.AddAsync(createDto);
+        return Ok(new { Mesaj = "Araç başarıyla eklendi." });
     }
 
     [HttpGet]
     public async Task<IActionResult> Listele()
     {
-        // Listeleme işini Repository'den istiyoruz
-        var araclar = await _aracRepository.GetAllAsync();
-        
+        // Servis bize veritabanı nesnesi değil, AracListDto listesi dönecek
+        var araclar = await _aracService.GetAllAsync();
         return Ok(araclar);
     }
     
     [HttpGet("{id}")]
     public async Task<IActionResult> Getir(int id)
     {
-        var arac = await _aracRepository.GetByIdAsync(id);
+        var arac = await _aracService.GetByIdAsync(id);
         if (arac == null)
         {
-            return NotFound("Araç bulunamadı."); // 404 Hatası döndürür
+            return NotFound("Araç bulunamadı."); 
         }
         return Ok(arac);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Guncelle(int id, Arac arac)
+    public async Task<IActionResult> Guncelle(int id, AracUpdateDto updateDto)
     {
-        if (id != arac.Id)
+        if (id != updateDto.Id)
         {
-            return BadRequest("ID uyuşmazlığı!"); // 400 Hatası döndürür
+            return BadRequest("ID uyuşmazlığı!"); 
         }
 
-        await _aracRepository.UpdateAsync(arac);
-        return NoContent(); // 204 Kodu (Başarılı ama geriye veri dönmüyoruz)
+        await _aracService.UpdateAsync(updateDto);
+        return NoContent(); 
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Sil(int id)
     {
-        var arac = await _aracRepository.GetByIdAsync(id);
-        if (arac == null)
-        {
-            return NotFound("Silinecek araç bulunamadı.");
-        }
+        // Servisteki "Onaylı kayıt silinemez" kuralı devreye girecek
+        await _aracService.DeleteAsync(id);
+        return NoContent(); 
+    }
 
-        await _aracRepository.DeleteAsync(id);
-        return NoContent(); // 204 Kodu
+    // --- YENİ EKLENEN İŞ KURALLARI (Toplu Onay İşlemleri) ---
+
+    [HttpPost("onayla")]
+    public async Task<IActionResult> Onayla([FromBody] List<int> ids)
+    {
+        await _aracService.OnaylaAsync(ids);
+        return Ok(new { Mesaj = "Araçlar başarıyla onaylandı." });
+    }
+
+    [HttpPost("onaykaldir")]
+    public async Task<IActionResult> OnayKaldir([FromBody] List<int> ids)
+    {
+        await _aracService.OnayKaldirAsync(ids);
+        return Ok(new { Mesaj = "Araçların onayı başarıyla kaldırıldı." });
     }
 }

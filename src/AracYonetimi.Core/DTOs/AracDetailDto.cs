@@ -2,13 +2,15 @@ using System;
 
 namespace AracYonetimi.Core.DTOs
 {
-    public class AracCreateDto
+    public class AracDetailDto
     {
-        // --- 1. Grup: Temel Bilgiler ---
+        public int Id { get; set; }
+        
+        // --- Temel Bilgiler ---
         public string Kod { get; set; } = string.Empty;
         public string TipKod { get; set; } = string.Empty;
         public string Plaka { get; set; } = string.Empty;
-        public string MarkaKod { get; set; } = string.Empty; // Lookup'tan geleceği için 'Kod' eki var
+        public string MarkaKod { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
         public string TahsisTipKod { get; set; } = string.Empty;
         public string? SahipFirmaKod { get; set; }
@@ -16,17 +18,22 @@ namespace AracYonetimi.Core.DTOs
         public string DurumKod { get; set; } = string.Empty;
         public string? Aciklama { get; set; }
 
-        // --- 2. Grup: Sözleşme Bilgileri ---
+        // --- Sözleşme Bilgileri ---
         public DateTime? SozlesmeBaslangicTarih { get; set; }
         public DateTime? SozlesmeBitisTarih { get; set; }
+        public DateTime? SozlesmeIptalTarih { get; set; } 
         public string? DovizKod { get; set; }
         public decimal? Tutar { get; set; }
 
-        // --- 3. Grup: Km/Saat Bilgileri ---
+        // --- Km/Saat Bilgileri ---
         public int? MevcutKmSaat { get; set; }
         public int? KmSaatSinir { get; set; }
         public int? BakimPeriyot { get; set; }
         public bool KmSaatKontrol { get; set; }
         public bool BakimBildirim { get; set; }
+
+        // --- Sistem Bilgileri ---
+        public bool Onay { get; set; }
+        public bool Iptal { get; set; }
     }
 }

@@ -4,12 +4,14 @@ using AracYonetimi.Core.Interfaces;
 using AracYonetimi.Infrastructure.Repositories;
 using AracYonetimi.Api.Middlewares;
 using AracYonetimi.Application.Mappings;
+using AracYonetimi.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IAracRepository, AracRepository>();
 builder.Services.AddScoped<ILookupRepository, LookupRepository>();
+builder.Services.AddScoped<IAracService, AracService>();
 
 // AutoMapper'ı sisteme dahil ediyoruz (16. satır civarı burası oluyor)
 builder.Services.AddAutoMapper(cfg => 
