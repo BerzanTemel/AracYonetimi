@@ -1,14 +1,14 @@
-using AracYonetimi.Core.Entities;
+using AracYonetimi.Core.DTOs;
 
 namespace AracYonetimi.Core.Interfaces;
 
 public interface ILookupRepository
 {
-    Task<IEnumerable<AracTip>> GetAracTiplerAsync();
-    Task<IEnumerable<AracDurum>> GetAracDurumlarAsync();
-    Task<IEnumerable<AracTahsisTip>> GetAracTahsisTiplerAsync();
-    Task<IEnumerable<AracMarka>> GetAracMarkalarAsync();
-    Task<IEnumerable<Firma>> GetFirmalarAsync();
-    Task<IEnumerable<Personel>> GetPersonellerByFirmaAsync(string firmaKod);
-    Task<IEnumerable<Doviz>> GetDovizlerAsync();
+    Task<IEnumerable<AracTipListDto>> GetAracTiplerAsync();
+    Task<IEnumerable<AracDurumListDto>> GetAracDurumlarAsync();
+    Task<IEnumerable<AracTahsisTipListDto>> GetAracTahsisTiplerAsync();
+    Task<IEnumerable<AracMarkaListDto>> GetAracMarkalarAsync();
+    Task<IEnumerable<FirmaListDto>> GetFirmalarAsync();
+    Task<IEnumerable<PersonelDto>> GetPersonellerByFirmaAsync(string firmaKod);
+    Task<IEnumerable<DovizListDto>> GetDovizlerAsync();
 }

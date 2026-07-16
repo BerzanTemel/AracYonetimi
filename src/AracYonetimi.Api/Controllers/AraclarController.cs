@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using AracYonetimi.Core.DTOs; // Artık Entity değil DTO kullanıyoruz
+using AracYonetimi.Core.DTOs;
 using AracYonetimi.Core.Interfaces;
-using AracYonetimi.Application.Services; // IAracService için gerekli
+using AracYonetimi.Application.Services;
 
 namespace AracYonetimi.Api.Controllers;
 
@@ -11,7 +11,6 @@ public class AraclarController : ControllerBase
 {
     private readonly IAracService _aracService;
 
-    // Artık IAracRepository değil, iş kurallarımızın bulunduğu IAracService'i istiyoruz
     public AraclarController(IAracService aracService)
     {
         _aracService = aracService;
@@ -20,18 +19,23 @@ public class AraclarController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Ekle(AracCreateDto createDto)
     {
-        // Gelen DTO'yu servise gönderiyoruz, iş kuralları orada işletilip veritabanına eklenecek
         await _aracService.AddAsync(createDto);
         return Ok(new { Mesaj = "Araç başarıyla eklendi." });
     }
 
+    // --- FİLTRELEME İÇİN GÜNCELLENEN KISIM ---
     [HttpGet]
-    public async Task<IActionResult> Listele()
+    public async Task<IActionResult> Listele(
+        [FromQuery] string? plaka, 
+        [FromQuery] string? tipKod, 
+        [FromQuery] string? durumKod, 
+        [FromQuery] bool iptalGoster = false)
     {
-        // Servis bize veritabanı nesnesi değil, AracListDto listesi dönecek
-        var araclar = await _aracService.GetAllAsync();
+        // URL'den gelen query parametrelerini servise paslıyoruz.
+        var araclar = await _aracService.GetAllAsync(plaka, tipKod, durumKod, iptalGoster);
         return Ok(araclar);
     }
+    // ----------------------------------------
     
     [HttpGet("{id}")]
     public async Task<IActionResult> Getir(int id)
@@ -59,12 +63,9 @@ public class AraclarController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Sil(int id)
     {
-        // Servisteki "Onaylı kayıt silinemez" kuralı devreye girecek
         await _aracService.DeleteAsync(id);
         return NoContent(); 
     }
-
-    // --- YENİ EKLENEN İŞ KURALLARI (Toplu Onay İşlemleri) ---
 
     [HttpPost("onayla")]
     public async Task<IActionResult> Onayla([FromBody] List<int> ids)

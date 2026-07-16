@@ -3,6 +3,7 @@ using System;
 using AracYonetimi.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AracYonetimi.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260716082144_AddLookupSeedDataFinal")]
+    partial class AddLookupSeedDataFinal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -434,32 +437,6 @@ namespace AracYonetimi.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Personeller");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Ad = "Ahmet",
-                            FirmaKod = "FRM-01",
-                            Kod = "PRS-01",
-                            Soyad = "Yılmaz"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Ad = "Ayşe",
-                            FirmaKod = "FRM-01",
-                            Kod = "PRS-02",
-                            Soyad = "Çelik"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Ad = "Mehmet",
-                            FirmaKod = "FRM-02",
-                            Kod = "PRS-03",
-                            Soyad = "Kaya"
-                        });
                 });
 #pragma warning restore 612, 618
         }

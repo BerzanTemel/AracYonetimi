@@ -8,8 +8,10 @@ namespace AracYonetimi.Core.Interfaces
     {
         Task<Arac?> GetByIdAsync(int id);
         Task<IEnumerable<Arac>> GetAllAsync();
+        Task<IEnumerable<Arac>> GetAllFilteredAsync(string? plaka, string? tipKod, string? durumKod, bool iptalGoster);
         Task AddAsync(Arac arac);
         Task UpdateAsync(Arac arac);
-        Task DeleteAsync(int id); 
+        Task DeleteAsync(int id);
     }
+    
 }

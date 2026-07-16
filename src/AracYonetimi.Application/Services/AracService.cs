@@ -5,7 +5,6 @@ using AracYonetimi.Core.DTOs;
 using AracYonetimi.Core.Entities;      // Repository ve Entity'leri bağladığımızda aktif edeceğiz
 using AracYonetimi.Core.Interfaces;    // IAracRepository için aktif edeceğiz
 using AutoMapper;
-
 namespace AracYonetimi.Application.Services
 {
     public class AracService : IAracService
@@ -82,11 +81,14 @@ namespace AracYonetimi.Application.Services
 
        // --- 1. OKUMA İŞLEMLERİ ---
 
-        public async Task<IEnumerable<AracListDto>> GetAllAsync()
-        {
-            var araclar = await _aracRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<AracListDto>>(araclar); // Entity listesini DTO listesine çevir
-        }
+        public async Task<IEnumerable<AracListDto>> GetAllAsync(string? plaka, string? tipKod, string? durumKod, bool iptalGoster = false)
+{
+    // Filtreleme işini Repository'ye devrettik. Bize filtrelenmiş liste gelecek.
+    var araclar = await _aracRepository.GetAllFilteredAsync(plaka, tipKod, durumKod, iptalGoster);
+    
+    // Gelen listeyi DTO'ya çevirip dışarıya dönüyoruz.
+    return _mapper.Map<IEnumerable<AracListDto>>(araclar);
+}
 
         public async Task<AracDetailDto> GetByIdAsync(int id)
         {

@@ -5,8 +5,7 @@ namespace AracYonetimi.Application.Services
     public interface IAracService
     {
         // 1. Temel CRUD İşlemleri
-        Task<IEnumerable<AracListDto>> GetAllAsync();
-        Task<AracDetailDto> GetByIdAsync(int id);
+        Task<IEnumerable<AracListDto>> GetAllAsync(string? plaka, string? tipKod, string? durumKod, bool iptalGoster = false);        Task<AracDetailDto> GetByIdAsync(int id);
         Task<AracDetailDto> CreateAsync(AracCreateDto createDto);
         Task UpdateAsync(AracUpdateDto updateDto);
         Task DeleteAsync(int id); // BR-005: Onaylı kayıt silinemez kuralı burada işleyecek

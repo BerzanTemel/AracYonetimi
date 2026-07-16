@@ -4,5 +4,6 @@ namespace AracYonetimi.Core.DTOs
     {
         public int Id { get; set; }
         public string DurumAdi { get; set; } = string.Empty;
+        public string Kod { get; set; } = string.Empty;
     }
 }
