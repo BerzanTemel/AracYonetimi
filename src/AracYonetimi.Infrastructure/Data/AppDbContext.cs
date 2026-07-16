@@ -58,7 +58,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Firma>().HasData(
             new Firma { Id = 101, Kod = "ASB-TEST", Ad = "Avrupa Serbest Bölgesi A.Ş." }
         );
-        // 5.Personeller İçin Otomatik Veriler
+        // 5. Personeller İçin Otomatik Veriler
         modelBuilder.Entity<Personel>().HasData(
             new Personel { Id = 1, Kod = "PRS-01", Ad = "Ahmet", Soyad = "Yılmaz", FirmaKod = "FRM-01" },
             new Personel { Id = 2, Kod = "PRS-02", Ad = "Ayşe", Soyad = "Çelik", FirmaKod = "FRM-01" },

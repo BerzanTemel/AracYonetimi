@@ -13,11 +13,18 @@ builder.Services.AddScoped<IAracRepository, AracRepository>();
 builder.Services.AddScoped<ILookupRepository, LookupRepository>();
 builder.Services.AddScoped<IAracService, AracService>();
 
+
+// TODO: AutoMapper Konfigürasyonu İptali (Faz 1)
+// 1. Performans: Repository katmanında doğrudan veritabanı bazlı projeksiyon (Select) tercih edildi.
+// 2. Çakışma: v16 ile v12 paketleri arasındaki CS0121 'belirsiz çağrı' hatasını önlemek amaçlandı.
+// Araç Ekleme/Güncelleme (CRUD) formları gibi karmaşık DTO dönüşümleri gerekene kadar kapalı kalacaktır.
+// builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
 // AutoMapper'ı sisteme dahil ediyoruz (16. satır civarı burası oluyor)
-builder.Services.AddAutoMapper(cfg => 
-{
-    cfg.AddProfile<MappingProfile>();
-});
+//builder.Services.AddAutoMapper(cfg => 
+//{
+//    cfg.AddProfile<MappingProfile>();  // 
+//});
 
 // 1. Servis Kayıtları (Dependency Injection)
 // Swagger'ı sisteme tanıtıyoruz
