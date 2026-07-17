@@ -12,6 +12,8 @@ namespace AracYonetimi.Core.Interfaces
         Task AddAsync(Arac arac);
         Task UpdateAsync(Arac arac);
         Task DeleteAsync(int id);
+        // Kural BR-015 (Benzersiz Kod) kontrolü için eklediğimiz metot[cite: 3]
+        Task<Arac?> GetByKodAsync(string kod);
     }
     
 }

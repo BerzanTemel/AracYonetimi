@@ -19,6 +19,7 @@ namespace AracYonetimi.Core.DTOs
         // --- 2. Grup: Sözleşme Bilgileri ---
         public DateTime? SozlesmeBaslangicTarih { get; set; }
         public DateTime? SozlesmeBitisTarih { get; set; }
+        public DateTime? SozlesmeIptalTarih { get; set; }
         public string? DovizKod { get; set; }
         public decimal? Tutar { get; set; }
 

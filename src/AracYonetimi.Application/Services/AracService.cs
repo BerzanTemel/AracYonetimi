@@ -22,6 +22,18 @@ namespace AracYonetimi.Application.Services
         public async Task<AracDetailDto> CreateAsync(AracCreateDto createDto)
         {
             // --- 1. AŞAMA: İŞ KURALLARI (BUSINESS RULES) DOĞRULAMASI ---
+            // 1. Veritabanından o kod var mı diye sor
+        var mevcutArac = await _aracRepository.GetByKodAsync(createDto.Kod);
+
+        // 2. Eğer veritabanı "evet, bu kodda araç var" (null değil) diyorsa, o zaman hata fırlat
+        if (mevcutArac != null)
+        {
+            throw new InvalidOperationException("Bu kod ile kayıt zaten mevcut");
+        }
+
+        // 3. Eğer yukarıdaki if çalışmazsa (yani araç yoksa), aşağıda bildiğin mapping işlemlerine devam et
+        var yeniArac = _mapper.Map<Arac>(createDto);
+        // ... geri kalan kodların
 
             // BR-014: Mevcut km/saat negatif olamaz
             if (createDto.MevcutKmSaat.HasValue && createDto.MevcutKmSaat < 0)
@@ -43,15 +55,31 @@ namespace AracYonetimi.Application.Services
             {
                 throw new ArgumentException("Bitiş tarihi, başlangıç tarihinden önce olamaz");
             }
+            if (createDto.DurumKod == "9") 
+            {
+            // Durum iptal ise tarih zorunlu[cite: 3]
+            if (!createDto.SozlesmeIptalTarih.HasValue) 
+            {
+                throw new ArgumentException("Araç durum iptal edilmiş. İptal tarih girilmesi zorunludur!");
+            }
+        }
+            else
+        {
+            // Durum iptal DEĞİLSE tarih boş olmalı[cite: 3]
+            if (createDto.SozlesmeIptalTarih.HasValue)
+            {
+                throw new ArgumentException("Durum iptal değil. Bilgi girilemez!");
+            }
+        }
 
             // --- 2. AŞAMA: DTO'DAN ENTITY'YE DÖNÜŞÜM (MAPPING) ---
-            
+
             // AutoMapper, DTO'daki verileri yeni bir Arac entity'sine kopyalıyor
-             var yeniArac = _mapper.Map<Arac>(createDto);
+            _ = _mapper.Map<Arac>(createDto);
 
             // --- 3. AŞAMA: YENİ KAYIT VARSAYILAN DEĞER ATAMALARI ---
-            
-             yeniArac.DurumKod = "1";     // BR-001: Yeni kayıtta durum_kod = "1" (Aktif)
+
+            yeniArac.DurumKod = "1";     // BR-001: Yeni kayıtta durum_kod = "1" (Aktif)
             yeniArac.Onay = true;        // BR-002: Yeni kayıtta onay = true
             yeniArac.Iptal = false;      // BR-003: Yeni kayıtta iptal = false
             yeniArac.FirmaKod = "001";   // BR-004: Yeni kayıtta firma_kod = "001"

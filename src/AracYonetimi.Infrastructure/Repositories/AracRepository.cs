@@ -68,4 +68,11 @@ public class AracRepository : IAracRepository
             await _context.SaveChangesAsync();
         }
     }
+
+        public async Task<Arac?> GetByKodAsync(string kod)
+        {
+        // _context senin AppDbContext (veritabanı) nesnendir.
+        // Eğer constructor'da ismini _dbContext veya farklı bir şey yaptıysan ona göre değiştirebilirsin.
+        return await _context.Araclar.FirstOrDefaultAsync(a => a.Kod == kod);
+        }
 }
